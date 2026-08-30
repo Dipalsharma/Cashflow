@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import Summarycard from "../../components/SummaryCard/SummaryCard";
+import TransactionForm from "../../components/TransactionForm/TransactionForm";
 
 const Home = () => {
+  const [income, setIncome] = useState(40000);
+  const [expenses, setExpenses] = useState(15000);
+
+  // Balance is calculated automatically
+  const balance = income - expenses;
+
+  // Add income
+  const addIncome = (amount) => {
+    setIncome(income + amount);
+  };
+
+  // Add expense
+  const addExpense = (amount) => {
+    setExpenses(expenses + amount);
+  };
+
   return (
     <div className="home">
       <h1>Welcome to CashFlow</h1>
@@ -12,23 +29,29 @@ const Home = () => {
 
         <Summarycard
           title="Total Balance"
-          amount="25,000"
+          amount={balance}
           description="Available balance"
         />
 
         <Summarycard
           title="Total Income"
-          amount="40,000"
+          amount={income}
           description="This month"
         />
 
         <Summarycard
           title="Total Expenses"
-          amount="15,000"
+          amount={expenses}
           description="This month"
         />
 
       </div>
+
+      <TransactionForm
+        addIncome={addIncome}
+        addExpense={addExpense}
+      />
+
     </div>
   );
 };
