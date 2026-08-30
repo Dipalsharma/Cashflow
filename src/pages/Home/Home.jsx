@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import Summarycard from "../../components/SummaryCard/SummaryCard";
 import TransactionForm from "../../components/TransactionForm/TransactionForm";
 
@@ -8,7 +8,18 @@ const Home = () => {
 
   // Balance is calculated automatically
   const balance = income - expenses;
+  
+   useEffect(() => {
+  document.title = `CashFlow | Balance: ₹${balance}`;
+}, [balance]);
 
+useEffect(() => {
+  console.log("CashFlow Home component mounted");
+
+  return () => {
+    console.log("CashFlow Home component unmounted");
+  };
+}, []);
   // Add income
   const addIncome = (amount) => {
     setIncome(income + amount);
