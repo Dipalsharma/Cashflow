@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./TransactionForm.css";
 
 const TransactionForm = ({ addIncome, addExpense }) => {
   const [amount, setAmount] = useState("");
+  const amountRef = useRef(null);
 
   const handleIncome = () => {
     if (amount === "") return;
 
     addIncome(Number(amount));
     setAmount("");
+    amountRef.current.focus();
   };
 
   const handleExpense = () => {
@@ -16,6 +18,7 @@ const TransactionForm = ({ addIncome, addExpense }) => {
 
     addExpense(Number(amount));
     setAmount("");
+    amountRef.current.focus();
   };
 
   return (
@@ -27,6 +30,7 @@ const TransactionForm = ({ addIncome, addExpense }) => {
         placeholder="Enter amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
+          ref={amountRef}
       />
 
       <div className="transaction-buttons">

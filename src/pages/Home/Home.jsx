@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import Summarycard from "../../components/SummaryCard/SummaryCard";
 import TransactionForm from "../../components/TransactionForm/TransactionForm";
 
@@ -6,29 +6,34 @@ const Home = () => {
   const [income, setIncome] = useState(40000);
   const [expenses, setExpenses] = useState(15000);
 
-  // Balance is calculated automatically
-  const balance = income - expenses;
-  
-   useEffect(() => {
-  document.title = `CashFlow | Balance: ₹${balance}`;
-}, [balance]);
+  // Calculate balance using useMemo
+  const balance = useMemo(() => {
+    return income - expenses;
+  }, [income, expenses]);
 
-useEffect(() => {
-  console.log("CashFlow Home component mounted");
+  // Update document title when balance changes
+  useEffect(() => {
+    document.title = `CashFlow | Balance: ₹${balance}`;
+  }, [balance]);
 
-  return () => {
-    console.log("CashFlow Home component unmounted");
-  };
-}, []);
-  // Add income
-  const addIncome = (amount) => {
-    setIncome(income + amount);
-  };
+  // Component lifecycle
+  useEffect(() => {
+    console.log("CashFlow Home component mounted");
 
-  // Add expense
-  const addExpense = (amount) => {
-    setExpenses(expenses + amount);
-  };
+    return () => {
+      console.log("CashFlow Home component unmounted");
+    };
+  }, []);
+
+  // Add income using useCallback
+  const addIncome = useCallback((amount) => {
+    setIncome((prevIncome) => prevIncome + amount);
+  }, []);
+
+  // Add expense using useCallback
+  const addExpense = useCallback((amount) => {
+    setExpenses((prevExpenses) => prevExpenses + amount);
+  }, []);
 
   return (
     <div className="home">
@@ -37,7 +42,6 @@ useEffect(() => {
       <p>Personal Finance Dashboard</p>
 
       <div className="summary-container">
-
         <Summarycard
           title="Total Balance"
           amount={balance}
@@ -55,14 +59,12 @@ useEffect(() => {
           amount={expenses}
           description="This month"
         />
-
       </div>
 
       <TransactionForm
         addIncome={addIncome}
         addExpense={addExpense}
       />
-
     </div>
   );
 };

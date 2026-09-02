@@ -7,18 +7,22 @@ import About from "./pages/About/About";
 import Contact from "./pages/Contact/Contact";
 import Transactions from "./pages/Transactions/Transactions";
 
+import { FinanceProvider } from "./context/FinanceContext";
+
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
+    <FinanceProvider>
+      <BrowserRouter>
+        <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/transactions" element={<Transactions />} />
-      </Routes>
-    </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/transactions" element={<Transactions />} />
+        </Routes>
+      </BrowserRouter>
+    </FinanceProvider>
   );
 }
 

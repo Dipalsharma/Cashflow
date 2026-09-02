@@ -1,18 +1,20 @@
 import React from "react";
+import { useFinance } from "../../context/FinanceContext";
 import "./SummaryCard.css";
 
 const SummaryCard = ({ title, amount, description }) => {
+  const { currency } = useFinance();
+
   return (
     <div className="summary-card">
-      <p className="summary-title">{title}</p>
+      <h3>{title}</h3>
 
-      <h2 className="summary-amount">
+      <h2>
+        {currency}
         {amount}
       </h2>
 
-      <p className="summary-description">
-        {description}
-      </p>
+      <p>{description}</p>
     </div>
   );
 };

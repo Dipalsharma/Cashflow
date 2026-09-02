@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-
+import { useFinance } from "../../context/FinanceContext";
 const Navbar = () => {
+  const { currency, setCurrency } = useFinance();
   return (
     <nav className="navbar">
       <div className="logo">
@@ -21,6 +22,9 @@ const Navbar = () => {
         <span>Personal Finance</span>
         <div className="profile-circle">P</div>
       </div>
+      <button onClick={() => setCurrency(currency === "₹" ? "$" : "₹")}>
+       Change Currency
+      </button>
     </nav>
   );
 };
