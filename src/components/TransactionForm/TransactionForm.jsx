@@ -1,16 +1,19 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./TransactionForm.css";
 
 const TransactionForm = ({ addIncome, addExpense }) => {
   const [amount, setAmount] = useState("");
-  const amountRef = useRef(null);
+  const amountInputRef = useRef(null);
+
+  useEffect(() => {
+    amountInputRef.current.focus();
+  }, []);
 
   const handleIncome = () => {
     if (amount === "") return;
 
     addIncome(Number(amount));
     setAmount("");
-    amountRef.current.focus();
   };
 
   const handleExpense = () => {
@@ -18,7 +21,6 @@ const TransactionForm = ({ addIncome, addExpense }) => {
 
     addExpense(Number(amount));
     setAmount("");
-    amountRef.current.focus();
   };
 
   return (
@@ -26,21 +28,16 @@ const TransactionForm = ({ addIncome, addExpense }) => {
       <h2>Add Transaction</h2>
 
       <input
+        ref={amountInputRef}
         type="number"
         placeholder="Enter amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
-          ref={amountRef}
       />
 
       <div className="transaction-buttons">
-        <button onClick={handleIncome}>
-          Add Income
-        </button>
-
-        <button onClick={handleExpense}>
-          Add Expense
-        </button>
+        <button onClick={handleIncome}>Add Income</button>
+        <button onClick={handleExpense}>Add Expense</button>
       </div>
     </div>
   );
