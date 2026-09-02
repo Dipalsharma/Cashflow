@@ -1,39 +1,47 @@
 const express = require("express");
+const Transaction = require("../models/Transaction");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({
-    success: true,
-    transactions: [
-      {
-        id: 1,
-        type: "income",
-        amount: 40000,
-        description: "Monthly Salary",
-      },
-      {
-        id: 2,
-        type: "expense",
-        amount: 15000,
-        description: "Monthly Expenses",
-      },
-    ],
-  });
+// Get all transactions
+router.get("/", async (req, res) => {
+  try {
+    const transactions = await Transaction.find().sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      transactions,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch transactions",
+    });
+  }
 });
 
-router.post("/", (req, res) => {
-  const { type, amount, description } = req.body;
+// Add a transaction
+router.post("/", async (req, res) => {
+  try {
+    const { type, amount, description } = req.body;
 
-  res.json({
-    success: true,
-    message: "Transaction added successfully",
-    transaction: {
+    const transaction = await Transaction.create({
       type,
       amount,
       description,
-    },
-  });
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Transaction added successfully",
+      transaction,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 });
 
 module.exports = router;
